@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/backgroundSpace.png');
+        this.load.image('border', './assets/RocketPatrolBorder.png');
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
     }
@@ -16,13 +17,13 @@ class Play extends Phaser.Scene {
         gameAudio.play();
         //place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
- 
-        //white rectangle borders
-        this.add.rectangle(5, 5, 630, 32, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(5, 443, 630, 32, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(5, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(603, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
 
+        //white rectangle borders
+        //this.add.rectangle(5, 5, 630, 32, 0xFFFFFF).setOrigin(0, 0);
+        //this.add.rectangle(5, 443, 630, 32, 0xFFFFFF).setOrigin(0, 0);
+        //this.add.rectangle(5, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
+        //this.add.rectangle(603, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
+        this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'border').setOrigin(0, 0);
         //green UI background
         this.add.rectangle(37, 42, 566, 64, 0x00FF00).setOrigin(0, 0);
 
@@ -63,7 +64,7 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
-        this.scoreRight = this.add.text(400, 54,'HS:' + highScore, scoreConfig);
+        this.scoreRight = this.add.text(400, 54, 'HS:' + highScore, scoreConfig);
 
         // game over flag
         this.gameOver = false;
@@ -75,10 +76,11 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2 + 64, '(F)ire to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
-
+        setTimeout(this.increaseSpeed, 3000);
     }
 
     update() {
+
         // check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
             this.scene.restart(this.p1Score);
@@ -95,7 +97,7 @@ class Play extends Phaser.Scene {
             this.ship01.update();           // update spaceships (x3)
             this.ship02.update();
             this.ship03.update();
-            if(this.p1Score > highScore){
+            if (this.p1Score > highScore) {
                 highScore = this.p1Score;
                 this.scoreRight.text = 'HS:' + highScore;
             }
@@ -142,5 +144,8 @@ class Play extends Phaser.Scene {
         this.scoreLeft.text = this.p1Score;
 
         this.sound.play('sfx_explosion');
+    }
+    increaseSpeed() {
+        game.settings.spaceshipSpeed = game.settings.spaceshipSpeed *2;
     }
 }

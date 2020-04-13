@@ -20,4 +20,7 @@ var highScore = 0;
 (10) Add your own (copyright-free) background music to the Play scene
 (10) Allow the player to control the Rocket after it's fired
 (10) Create a new scrolling tile sprite for the background
+(10) Implement the speed increase that happens after 30 seconds in the original game
+(15) Replace the UI borders with new artwork
+
 */

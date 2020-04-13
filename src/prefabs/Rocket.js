@@ -14,7 +14,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
         if (keyLEFT.isDown && this.x >= 47) {
             this.x -= game.settings.spaceshipSpeed;
         }
-        else if (keyRIGHT.isDown && this.x <= 598) {
+        else if (keyRIGHT.isDown && this.x <= 580) {
             this.x += game.settings.spaceshipSpeed;
         }
 
