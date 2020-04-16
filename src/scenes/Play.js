@@ -16,10 +16,15 @@ class Play extends Phaser.Scene {
         //load particles
         this.load.image('spark0', './assets/blue.png');
         this.load.image('spark1', './assets/red.png');
+        //load song
+  //      this.load.audio('song', './assets/gameMusic.mp3');
     }
     create() {
-        var gameAudio = new Audio('./assets/gameMusic.mp3');
-        gameAudio.play();
+       // let gameAudio = this.sound.add('song');
+        //this.sound.play('song');
+        //this.sound.pause('song');
+
+        myMusic.play();
         //place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
         this.stars = this.add.tileSprite(0, 0, 640, 480, 'stars').setOrigin(0, 0);
@@ -88,14 +93,17 @@ class Play extends Phaser.Scene {
         }, null, this);
         //Ship Speed Increase after 30 seconds
         setTimeout(this.increaseSpeed, 30000);
-
     }
 
     update() {
 
+        if(this.gameOver){
+            myMusic.pause();
+        }
         // check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
-            this.scene.restart(this.p1Score);
+            gameTime = game.settings.gameTimer;
+            this.scene.restart();
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");

@@ -15,6 +15,7 @@ game.settings = {
 let keyF, keyLEFT, keyRIGHT;
 var highScore = 0;
 var gameTime = 60000;
+var myMusic = new Audio("./assets/gameMusic.mp3");
 /*Mods Added:
 
 (10) Track a high score that persists across scenes and display it in the UI
@@ -25,6 +26,7 @@ var gameTime = 60000;
 (15) Replace the UI borders with new artwork
 (15) Display the time remaining (in seconds) on the screen
 (15) Implement parallax scrolling
+(15) Created new title screen
 (25) Create a new spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points
 (25) Use Phaser's particle emitter to create a particle explosion when the rocket hits the spaceship
 */
