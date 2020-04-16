@@ -26,7 +26,10 @@ var myMusic = new Audio("./assets/gameMusic.mp3");
 (15) Replace the UI borders with new artwork
 (15) Display the time remaining (in seconds) on the screen
 (15) Implement parallax scrolling
-(15) Created new title screen
+
+=======
+(15) Create a new title screen
+>>>>>>> 8ce171b00aa3f135753d736c774408dcd34e802a
 (25) Create a new spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points
 (25) Use Phaser's particle emitter to create a particle explosion when the rocket hits the spaceship
 */
