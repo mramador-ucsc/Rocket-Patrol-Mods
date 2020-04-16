@@ -10,21 +10,27 @@ class Play extends Phaser.Scene {
         this.load.image('smallSpaceship', './assets/SmallSpaceship.png');
         this.load.image('starfield', './assets/backgroundSpace.png');
         this.load.image('border', './assets/RocketPatrolBorder.png');
+        this.load.image('stars', './assets/stars.png');
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
+        //load particles
+        this.load.image('spark0', './assets/blue.png');
+        this.load.image('spark1', './assets/red.png');
     }
     create() {
         var gameAudio = new Audio('./assets/gameMusic.mp3');
         gameAudio.play();
         //place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+        this.stars = this.add.tileSprite(0, 0, 640, 480, 'stars').setOrigin(0, 0);
 
         //white rectangle borders
         //this.add.rectangle(5, 5, 630, 32, 0xFFFFFF).setOrigin(0, 0);
         //this.add.rectangle(5, 443, 630, 32, 0xFFFFFF).setOrigin(0, 0);
         //this.add.rectangle(5, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
         //this.add.rectangle(603, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
-        this.background = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'border').setOrigin(0, 0);
+        this.border = this.add.tileSprite(0, 0, game.config.width, game.config.height, 'border').setOrigin(0, 0);
+
         //green UI background
         this.add.rectangle(37, 42, 566, 64, 0x00FF00).setOrigin(0, 0);
 
@@ -82,6 +88,7 @@ class Play extends Phaser.Scene {
         }, null, this);
         //Ship Speed Increase after 30 seconds
         setTimeout(this.increaseSpeed, 30000);
+
     }
 
     update() {
@@ -95,7 +102,8 @@ class Play extends Phaser.Scene {
         }
 
         //scroll starfield
-        this.starfield.tilePositionX -= 4;
+        this.starfield.tilePositionX -= .5;
+        this.stars.tilePositionX -= 3;
 
         if (!this.gameOver) {
             this.p1Rocket.update();         // update rocket sprite
@@ -134,7 +142,7 @@ class Play extends Phaser.Scene {
             this.shipExplode(this.shipS02);
         }
         //Check if game is over, if it is, display 0 time left
-        if(this.gameOver){
+        if (this.gameOver) {
             this.displayTime.text = 'T:0'
         }
     }
@@ -152,28 +160,51 @@ class Play extends Phaser.Scene {
     }
     shipExplode(ship) {
         ship.alpha = 0;                         // temporarily hide ship
-        // create explosion sprite at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode');             // play explode animation
-        boom.on('animationcomplete', () => {    // callback after animation completes
-            ship.reset();                       // reset ship position
-            ship.alpha = 1;                     // make ship visible again
-            boom.destroy();                     // remove explosion sprite
-        });
         // score increment and repaint
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
 
         this.sound.play('sfx_explosion');
+
+        for (var i = 0; i < 10; i++) {
+            var emitter0 = this.add.particles('spark0').createEmitter({
+                x: ship.x,
+                y: ship.y,
+                speed: { min: -400, max: 400 },
+                angle: { min: 0, max: 360 },
+                scale: { start: 0.5, end: 0 },
+                blendMode: 'SCREEN',
+                //active: false,
+                lifespan: 600,
+                gravityY: 0
+            });
+
+            var emitter1 = this.add.particles('spark1').createEmitter({
+                x: ship.x,
+                y: ship.y,
+                speed: { min: -400, max: 400 },
+                angle: { min: 0, max: 360 },
+                scale: { start: 0.3, end: 0 },
+                blendMode: 'SCREEN',
+                //active: false,
+                lifespan: 300,
+                gravityY: 0
+            });
+            emitter0.explode();
+            emitter1.explode();
+
+        }
+        ship.reset();                       // reset ship position
+        ship.alpha = 1;                     // make ship visible again
     }
     increaseSpeed() {
         game.settings.spaceshipSpeed = game.settings.spaceshipSpeed * 2.5;
     }
     updatetime() {
-        gameTime-=16.6666;
+        gameTime -= 16.6666;
         if (gameTime >= 16.666) {
-            
-            this.displayTime.text = 'T:' + gameTime/1000;
+
+            this.displayTime.text = 'T:' + gameTime / 1000;
         }
     }
 }

@@ -24,5 +24,7 @@ var gameTime = 60000;
 (10) Implement the speed increase that happens after 30 seconds in the original game
 (15) Replace the UI borders with new artwork
 (15) Display the time remaining (in seconds) on the screen
+(15) Implement parallax scrolling
 (25) Create a new spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points
+(25) Use Phaser's particle emitter to create a particle explosion when the rocket hits the spaceship
 */
