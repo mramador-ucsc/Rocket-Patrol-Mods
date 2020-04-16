@@ -103,7 +103,9 @@ class Play extends Phaser.Scene {
         // check key input for restart
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
             gameTime = game.settings.gameTimer;
+            game.settings.spaceshipSpeed = game.settings.spaceshipSpeed / 2.5;
             this.scene.restart();
+            
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
